@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Antonio&display=swap');
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #111;
+  color: #fff;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 🎛 Panneau de contrôle */
+.sidebar {
+  width: 300px;
+  background-color: #1e1e1e;
+  padding: 1rem;
+  overflow-y: auto;
+  border-right: 1px solid #333;
+}
+
+.sidebar h2 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.sidebar button {
+  display: block;
+  margin-top: 1rem;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sidebar button:hover {
+  background-color: #666;
+}
+
+/* 🖼 Partie principale */
+.main {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* 📝 Formulaire */
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  max-width: 800px;
+}
+
+.form input {
+  flex: 1 1 20%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  min-width: 120px;
+}
+
+.form button {
+  flex: 0 0 auto;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+/* 🖼 Poster */
+.poster {
+  position: relative;
+  margin: 2rem auto;
+  overflow: hidden;
+  background: black;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* 📍 Éléments centrés individuellement */
+.element {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  z-index: 1;
+  pointer-events: none;
+  font-weight: bold;
+}
