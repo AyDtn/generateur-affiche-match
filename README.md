@@ -67,6 +67,7 @@ generateur-affiche-match/
 │   ├── background1.png
 │   ├── background2.png
 │   ├── background3.png
+│   ├── favicon.png
 ├── src/
 │   ├── App.jsx          # Composant principal React
 │   ├── App.css          # Feuille de style associée
@@ -85,8 +86,8 @@ Voici le détail de la structure du projet, avec le rôle de chaque fichier :
 
 - `background1.png`, `background2.png`, `background3.png`  
   Images de fond utilisées selon le nombre de matchs (1, 2 ou 3). Elles servent de modèle graphique pour l'affiche.
-- `vite.svg`  
-  Logo par défaut généré par Vite, non utilisé dans ce projet mais laissé tel quel.
+- `favicon.svg`  
+  Logo du club de sport pour lequel cette application web a été initialement créée.
 
 ---
 
@@ -126,13 +127,6 @@ Voici le détail de la structure du projet, avec le rôle de chaque fichier :
   Fichier qui indique à Git les fichiers à ignorer (ex: `node_modules`, `dist`, etc.)
 - `README.md`  
   Fichier que vous lisez actuellement. Il explique le projet, son installation, son fonctionnement, et son auteur.
-
----
-
-### Dossiers `.vs/` ou autres fichiers système
-
-Ces fichiers sont créés par certains éditeurs comme Visual Studio ou VS Code.  
-Ils n’ont pas d’utilité dans le fonctionnement de l'application et peuvent être ajoutés à `.gitignore` si besoin.
 
 ---
 
