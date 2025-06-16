@@ -38,7 +38,7 @@ L'application permet :
 - **Vite** pour un environnement de développement moderne et rapide
 - **html-to-image** pour capturer le rendu HTML dans une image exportable
 - **Antonio (Google Fonts)** pour une police moderne, inspirée de modèles graphiques sportifs comme ceux utilisés sur Canva
-- Styles CSS figés** pour garantir un rendu constant quelle que soit la longueur des noms
+- **Styles CSS figés** pour garantir un rendu constant quelle que soit la longueur des noms
 
 ---
 
