@@ -10,21 +10,15 @@ function App() {
   const posterRef = useRef(null);
 
   const backgrounds = [
-    '/background1.png', // 1 match
-    '/background2.png', // 2 matchs
-    '/background3.png', // 3 matchs
-    // '/background4.png', // 4 matchs (prévu)
-    // ...
-    // '/background10.png', // 10 matchs
+    '/background1.png',
+    '/background2.png',
+    '/background3.png',
   ];
 
   const backgroundSizes = [
     { width: 1080, height: 460 },
     { width: 1080, height: 580 },
     { width: 1080, height: 700 },
-    // { width: 1080, height: 820 }, // 4 matchs
-    // ...
-    // { width: 1080, height: 1520 }, // 10 matchs
   ];
 
   const teamColor = '#004096';
@@ -70,13 +64,7 @@ function App() {
   const background = backgrounds[currentBgIndex];
 
   return (
-    <div className="app-wrapper">
-      <div className="sidebar">
-        <h2>Générateur d’affiche</h2>
-        <button onClick={addMatch}>➕ Ajouter un match</button>
-        <button onClick={handleDownload}>📸 Télécharger</button>
-      </div>
-
+    <div className="app-wrapper no-sidebar">
       <div className="main">
         {matches.map((match, index) => (
           <div key={index} className="form">
@@ -107,6 +95,11 @@ function App() {
             <button onClick={() => removeMatch(index)}>❌</button>
           </div>
         ))}
+
+        <div className="form-buttons">
+          <button onClick={addMatch}>➕ Ajouter un match</button>
+          <button onClick={handleDownload}>📸 Télécharger l’affiche</button>
+        </div>
 
         <div
           className="poster"
