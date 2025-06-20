@@ -219,6 +219,6 @@ Ce choix s’aligne avec les objectifs initiaux du projet : rapidité, accessibi
 
 ## Auteur
 
-Ce projet, à but démonstratif et pédogagique, est librement utilisable et adaptable dans un cadre éducatif, personnel ou associatif.
+Ce projet, est librement utilisable et adaptable dans un cadre éducatif, personnel et non lucratif.
 
 Développé par **DANTAN Aymeric**.
