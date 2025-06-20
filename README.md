@@ -1,10 +1,24 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Licence](https://img.shields.io/badge/licence-MIT-green)
 ![Statut](https://img.shields.io/badge/status-en%20cours-yellow)<br>
 ![Tech](https://img.shields.io/badge/Made%20with-React-blue)
-![Déployé sur Vercel](https://img.shields.io/badge/deploy-Vercel-black)
+![Déployé sur Vercel](https://img.shields.io/badge/deploy-Vercel-black)<br>
+![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
+
+
+## Licence
+
+Ce projet est sous licence [GNU GPL v3](https://www.gnu.org/licenses/gpl-3.0.html).
+
+Vous êtes libre de l’utiliser, de le modifier, de le partager, tant que toute distribution du projet ou d’une version modifiée respecte cette même licence et inclut le code source.
+
+**Toute utilisation à des fins commerciales ou professionnelles est strictement interdite.** Le projet est destiné exclusivement à un usage personnel, éducatif ou associatif non lucratif.
+
+---
 
 Application fonctionnelle : https://generateur-affiche-match.vercel.app/
+
+---
+
 # Générateur d’Affiches de Match
 
 Ce projet est une application web conçue pour générer dynamiquement des affiches de scores sportifs à partir d’un formulaire de saisie et d’un modèle graphique.  
@@ -82,6 +96,7 @@ generateur-affiche-match/
 ├── package.json
 ├── vite.config.js
 ├── README.md
+├── LICENCE
 ```
 
 ---
