@@ -171,6 +171,31 @@ https://generateur-affiche-match.vercel.app
 
 ---
 
+## Choix de rester sur une version Web
+
+Bien qu’il soit techniquement possible de transformer cette application en version exécutable pour Windows, macOS, Android ou iOS, le choix a été fait de la laisser sous forme de web app.
+Ce choix s’explique par plusieurs raisons pratiques et stratégiques :
+
+- Accessibilité universelle : Une simple URL suffit pour accéder à l’outil, sans installation ni configuration sur l’appareil de l’utilisateur.
+- Simplicité de mise à jour : Une seule version est maintenue côté serveur. Toute mise à jour est immédiatement disponible pour tous les utilisateurs.
+- Gain de temps et de ressources : Pas besoin de gestion des builds pour chaque système (Windows, macOS, Android, iOS), ni de passer par les étapes de validation des stores.
+- Cohérence graphique garantie : Le rendu visuel est contrôlé et identique quel que soit l’appareil utilisé, tant que le navigateur est moderne.
+
+### Comparatif des options
+
+| Plateforme        | Facilité de mise en place | Nécessite une installation | Maintenance | Avantages | Inconvénients |
+|-------------------|---------------------------|-----------------------------|-------------|-----------|---------------|
+| Web (React + Vite) | Très facile avec Vercel | Non | Centralisée | Accessible partout, rapide à déployer | Dépend du navigateur |
+| Windows (.exe via Electron) | Complexité moyenne | Oui | Multi-plateforme | Accès hors-ligne, intégration système | Fichier lourd, dépendance à Node |
+| macOS (.app via Electron) | Complexité moyenne | Oui | Multi-plateforme | Accès hors-ligne, intégration système | Signature requise, notarisation Apple |
+| Android (via WebView ou PWA) | Configuration spécifique | Oui (APK) | Stores & compatibilité | installation sur téléphone | Publication Play Store, fragmentation Android |
+| iOS (PWA ou WebView dans App) | Très contraignant | Oui (IPA) | App Store strict | Installation possible, icône sur écran d’accueil | Règles Apple restrictives, coût développeur |
+
+Ainsi, la version web reste la plus adaptée pour un outil simple, efficace, régulièrement mis à jour et partagé entre utilisateurs sans contrainte technique.
+Ce choix s’aligne avec les objectifs initiaux du projet : rapidité, accessibilité et fiabilité.
+
+---
+
 ## Auteur
 
 Ce projet, à but démonstratif et pédogagique, est librement utilisable et adaptable dans un cadre éducatif, personnel ou associatif.
