@@ -1,3 +1,9 @@
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Licence](https://img.shields.io/badge/licence-MIT-green)
+![Statut](https://img.shields.io/badge/status-en%20cours-yellow)<br>
+![Tech](https://img.shields.io/badge/Made%20with-React-blue)
+![Déployé sur Vercel](https://img.shields.io/badge/deploy-Vercel-black)
+
 Application fonctionnelle : https://generateur-affiche-match.vercel.app/
 # Générateur d’Affiches de Match
 
