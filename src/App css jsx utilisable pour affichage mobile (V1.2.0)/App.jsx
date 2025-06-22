@@ -1,35 +1,31 @@
-// ─── IMPORTS ────────────────────────────────────────────────────────────────────
-import { useState, useRef } from 'react'       // Hooks React pour le state et la ref
-import './App.css'                              // Styles de l’application
-import { toPng } from 'html-to-image'           // Conversion du DOM en PNG
-import download from 'downloadjs'               // Téléchargement du blob généré
+// src/App.jsx
+import { useState, useRef } from 'react'
+import './App.css'
+import { toPng } from 'html-to-image'
+import download from 'downloadjs'
 
 function App() {
-  // ─── STATE & REFS ──────────────────────────────────────────────────────────
-  // matches est un tableau d’objets { team1, score1, team2, score2 }
   const [matches, setMatches] = useState([
     { team1: '', score1: '', team2: '', score2: '' },
   ])
-  // posterRef pointe vers le conteneur de l’affiche à exporter
   const posterRef = useRef(null)
 
-  // ─── CONSTANTES DE CONFIGURATION ───────────────────────────────────────────
-  // Fonds possibles, tailles associées (largeur fixe 1080px, hauteurs variables)
-  const backgrounds = ['/background1.png','/background2.png','/background3.png']
+  const backgrounds = [
+    '/background1.png',
+    '/background2.png',
+    '/background3.png',
+  ]
   const backgroundSizes = [
     { width: 1080, height: 460 },
     { width: 1080, height: 580 },
     { width: 1080, height: 700 },
   ]
-  // Paramètres de style pour le texte sur l’affiche
   const teamColor = '#004096'
   const scoreColor = '#FFFFFF'
   const teamSize = 36
   const scoreSize = 48
   const font = 'Antonio'
 
-  // ─── GESTION DES LIGNES DE MATCH ────────────────────────────────────────────
-  // Ajoute une ligne vierge à la fin
   const addMatch = () => {
     setMatches([
       ...matches,
@@ -37,29 +33,23 @@ function App() {
     ])
   }
 
-  // Supprime la ligne d’index donné
   const removeMatch = (index) => {
     setMatches(matches.filter((_, i) => i !== index))
   }
 
-  // Met à jour le champ (field) de la ligne index avec la valeur value
   const handleMatchChange = (index, field, value) => {
     const updated = [...matches]
     updated[index][field] = value
     setMatches(updated)
   }
 
-  // ─── EXPORT / TÉLÉCHARGEMENT DE L’AFFICHE ────────────────────────────────────
   const handleDownload = () => {
-    // Détermine quel fond et quelle taille utiliser selon le nombre de matchs
     const bgIndex = Math.min(matches.length - 1, backgrounds.length - 1)
     const size = backgroundSizes[bgIndex]
     if (!posterRef.current) return
-
-    // toPng génère un blob PNG du conteneur spécifié
     toPng(posterRef.current, {
       cacheBust: true,
-      pixelRatio: 1,            // ratio 1:1 pour pas alourdir
+      pixelRatio: 1,
       width: size.width,
       height: size.height,
     })
@@ -67,31 +57,21 @@ function App() {
       .catch((err) => console.error('Erreur export :', err))
   }
 
-  // ─── POSITIONNEMENT SUR L’AFFICHE ────────────────────────────────────────────
-  // Calcule la coordonnée y en fonction de la ligne (espacement de 120px)
   const getY = (line) => 347 + line * 120
-
-  // Choix du fond courant et de ses dimensions
   const currentBgIndex = Math.min(matches.length - 1, backgrounds.length - 1)
   const currentSize = backgroundSizes[currentBgIndex]
   const background = backgrounds[currentBgIndex]
 
-  // ─── RENDU JSX ───────────────────────────────────────────────────────────────
   return (
     <div className="app-wrapper no-sidebar">
       <div className="main">
 
-        {/* ─── FORMULAIRE DE SAISIE ─────────────────────────────────────────────── */}
+        {/* 1) Liste de tous les matchs, avec espacement contrôlé */}
         <div className="forms-list">
           {matches.map((match, index) => (
             <div className="match-item" key={index}>
-
-              {/* Label « Match N » au-dessus de chaque ligne */}
-              <span className="match-number">
-                Match {index + 1}
-              </span>
-
-              {/* Champs de saisie pour ce match */}
+              {/* 2) Label « Match N » */}
+              <span className="match-number">Match {index + 1}</span>
               <div className="form">
                 <input
                   type="text"
@@ -125,21 +105,17 @@ function App() {
                     handleMatchChange(index, 'score2', e.target.value)
                   }
                 />
-
-                {/* Bouton de suppression de ligne */}
                 <button onClick={() => removeMatch(index)}>❌</button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* ─── BOUTONS D’ACTION ─────────────────────────────────────────────────── */}
         <div className="form-buttons">
           <button onClick={addMatch}>➕ Ajouter un match</button>
           <button onClick={handleDownload}>📸 Télécharger l’affiche</button>
         </div>
 
-        {/* ─── AFFICHE A EXPORTER ───────────────────────────────────────────────── */}
         <div
           className="poster"
           ref={posterRef}
@@ -148,10 +124,8 @@ function App() {
             height: currentSize.height,
           }}
         >
-          {/* Fond de l’affiche */}
           <img src={background} alt="Affiche" className="background" />
 
-          {/* Positionne chaque score & nom sur le poster */}
           {matches.map((match, index) => {
             const y = getY(index)
             return (
