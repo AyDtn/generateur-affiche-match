@@ -1,52 +1,84 @@
+/* ─── 0) IMPORT DE LA POLICE ─────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&display=swap');
 
+/* ─── 0b) FORCAGE DU MODE SOMBRE ──────────────────────────────────────────────── */
+/* Informe le navigateur que seule la palette sombre est supportée */
+:root {
+  color-scheme: dark;
+}
+*, *::before, *::after {
+  forced-color-adjust: none; /* Empêche les UA de forcer leurs propres schémas */
+}
+
+/* ─── 1) RESET GLOBAL & FOND DE L’APP ────────────────────────────────────────── */
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
   width: 100%;
-  overflow-x: hidden;
-  background-color: #111;
+  height: 100%;
+  overflow-x: hidden;        /* Coupe tout débordement horizontal */
+  background-color: #1F1F1F;  /* Fond gris foncé */
+  color-scheme: dark;         /* Sécurité supplémentaire pour certains UA */
 }
 
+/* Conteneur principal englobant (header/sidebar éventuels) */
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  align-items: center;
+  min-height: 100vh;         /* Prend toute la hauteur pour centrer verticalement */
   box-sizing: border-box;
+  background-color: #1F1F1F;  /* Contraste plus foncé derrière le bloc main */
 }
 
+/* ─── 2) CONTENEUR CENTRAL (BLOC desktop) ───────────────────────────────────── */
 .main {
-  max-width: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-x: auto;
-  padding: 2rem;
-  flex: 1;
-  overflow-y: auto;
+  width: 1080px;              /* Largeur fixe desktop (même que le poster) */
+  margin: 2rem auto;          /* Centre et espace autour */
+  padding: 2rem;              /* Espace interne pour respirer */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+  gap: 2rem;                  /* Espace vertical entre sections */
+  background-color: #1F1F1F;  /* Fond du bloc principal */
+  border-radius: 12px;        /* Arrondis assortis au poster */
 }
 
-/* 📝 Ligne de formulaire */
+/* ─── 3) LISTE DE MATCHS & ESPACEMENT ───────────────────────────────────────── */
+.forms-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--match-spacing, 0rem); /* Contrôle l’espacement vertical entre items */
+  width: 100%;
+}
+
+/* Wrapper par match : contient le label + la form */
+.match-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label « Match N » au-dessus de chaque ligne */
+.match-number {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0rem; /* Ajuste l’espacement label ↔ form */
+}
+
+/* ─── 4) LIGNE DE SAISIE ─────────────────────────────────────────────────────── */
 .form {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 0.8rem;
-  padding: 1rem;
-  background-color: #1f1f1f;
+  gap: 0.8rem;               /* Espace horizontal entre inputs et bouton */
+  padding: 0.5rem;           /* Resserre la hauteur des lignes de saisie */
+  background-color: #1F1F1F;
   border-radius: 10px;
-  max-width: 1000px;
   width: 100%;
-  flex-wrap: nowrap;
 }
 
 .form input {
-  flex: 1 1 20%;
-  padding: 0.6rem 0.8rem;
+  flex: 1;                   /* Chaque input prend l’espace disponible */
+  padding: 0.6rem 0.8rem;    /* Espace interne pour le texte */
   font-size: 1rem;
   background-color: #2c2c2c;
   border: 1px solid #444;
@@ -55,9 +87,10 @@ body {
 }
 
 .form input::placeholder {
-  color: #bbb;
+  color: #bbb;               /* Couleur plus claire pour les placeholders */
 }
 
+/* Bouton ❌ de suppression de ligne */
 .form button {
   background: transparent;
   border: none;
@@ -67,17 +100,16 @@ body {
   padding: 0.3rem 0.6rem;
   transition: color 0.2s ease;
 }
-
 .form button:hover {
   color: #ff4d4d;
 }
 
-/* 📍 Boutons */
+/* ─── 5) BOUTONS D’ACTION ───────────────────────────────────────────────────── */
 .form-buttons {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  flex-wrap: wrap;
+  width: 100%;
 }
 
 .form-buttons button {
@@ -90,14 +122,13 @@ body {
   cursor: pointer;
   transition: background 0.3s ease;
 }
-
 .form-buttons button:hover {
   background-color: #0055c2;
 }
 
-/* 🖼 Affiche */
+/* ─── 6) CONTENEUR DE L’AFFICHE (POSTER) ───────────────────────────────────── */
 .poster {
-  max-width: 100%;
+  width: 1080px;             /* Largeur fixe (desktop) */
   position: relative;
   background: black;
   border-radius: 12px;
@@ -105,28 +136,24 @@ body {
 }
 
 .background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: absolute;        /* Fond en arrière-plan */
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   object-fit: cover;
   z-index: 0;
-  border-radius: 0;
 }
 
-/* 🎯 Éléments positionnés */
+/* ─── 7) ÉLÉMENTS TEXTUELS POSITIONNÉS ─────────────────────────────────────── */
 .element {
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); /* Centre chaque span sur ses coords */
   white-space: nowrap;
-  z-index: 1;
-  pointer-events: none;
+  z-index: 1;                  /* Par-dessus le background */
+  pointer-events: none;        /* N’interfère pas avec la saisie */
   font-weight: bold;
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.5s ease; /* Animation d’entrée */
 }
 
-/* ✨ Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
