@@ -1,16 +1,18 @@
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.2.0-blue)
 ![Statut](https://img.shields.io/badge/status-released-brightgreen)<br>
 ![Tech](https://img.shields.io/badge/Made%20with-React-blue)
 ![Déployé sur Vercel](https://img.shields.io/badge/deploy-Vercel-black)<br>
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
-## Version 1.1.0
+## Version 1.2.0
 
-- Forçage du **mode sombre** via meta `color-scheme` et CSS `color-scheme: dark`
-- Contrôle des **espacements** (entre matchs et inputs) grâce aux variables CSS `--match-spacing`, `gap`, `margin-bottom`
-- Ajout de labels **« Match N »** pour chaque ligne de saisie
-- **Commentaires détaillés** dans `App.jsx` et `App.css` pour faciliter la compréhension et la maintenance
-- Correction du **double-scroll** et adoption du **zoom natif** sur mobile
+- **Saisie assistée des équipes** : liste déroulante (`<datalist>`) pour le choix des équipes, tout en conservant la saisie libre.
+- **Sélecteur dynamique de fonds** : choix du dossier `PosterX` (Poster1, Poster2, …) via un `<select>` pour modifier l'image de fond, sans passer par une modification au code.
+- **Import automatique via `import.meta.glob`** : tous les fonds présents dans `src/assets/Posters/Poster*/` sont détectés et chargés.
+- **Viewport fixe desktop** redimensionné sur mobile (`<meta viewport width=1080, initial-scale=0.5>`).
+- **Centrage des contrôles** (ajout, sélecteur, téléchargement) grâce à `justify-content: center`.
+- **Dark mode forcé** via `meta color-scheme` et CSS `color-scheme: dark`.
+- **Bumps Git** : version `1.2.0`, branche `release/v1.2.0`, tag annoté `v1.2.0`.
 
 ---
 
@@ -18,137 +20,118 @@
 
 Ce projet est sous licence [GNU GPL v3](https://www.gnu.org/licenses/gpl-3.0.html).
 
-Vous êtes libre de l’utiliser, de le modifier, de le partager, tant que toute distribution du projet ou d’une version modifiée respecte cette même licence et inclut le code source.
-
-**Toute utilisation à des fins commerciales ou professionnelles est strictement interdite.** Le projet est destiné exclusivement à un usage personnel, éducatif ou associatif non lucratif.
+Vous êtes libre de l’utiliser, de le modifier et de le partager, à condition que toute distribution respecte cette même licence et inclue le code source.  
+**Toute utilisation à des fins commerciales ou professionnelles est interdite.**
 
 ---
 
-Application fonctionnelle : https://generateur-affiche-match.vercel.app/
+Application en ligne : https://generateur-affiche-match.vercel.app/
 
 ---
 
 # Générateur d’Affiches de Match
 
-Cette application web génère dynamiquement des affiches de scores sportifs à partir d’un formulaire de saisie et d’un modèle graphique.  
-Pensée pour une utilisation simple, rapide et esthétique par des clubs, organisateurs de tournois, associations sportives ou tout autre besoin de communication visuelle autour de résultats de match.
+Cette application web génère des affiches de scores sportifs à partir d’un formulaire.  
+Pensée pour une utilisation rapide et esthétique par des clubs, associations ou organisateurs de tournois.
 
-Développé avec React et Vite, il fournit un rendu professionnel exportable en PNG, sans compétence graphique requise.
+Développée en **React** avec **Vite**, elle offre un rendu professionnel exportable en PNG, sans compétence graphique requise.
 
 ---
 
-## Objectif du projet
+## Objectif
 
-Ce générateur répond au besoin de créer rapidement des affiches de scores harmonisées, sans passer par des outils de PAO traditionnels.
+Créer facilement des affiches de scores harmonisées, sans outils de PAO :
 
-L'application permet :
-- De **saisir** les noms des équipes et leurs scores
-- D’**automatiser l’intégration** de ces données sur un modèle graphique
-- De **sélectionner** automatiquement un fond adapté selon le nombre de matchs
-- D’**exporter** le rendu final en image PNG, prêt à être partagé ou imprimé
+- Saisie des noms d’équipes et scores  
+- Suggestions de noms (datalist) ou saisie libre  
+- Choix automatique de fonds selon le nombre de matchs  
+- Export haute résolution en PNG  
+- Affichage fixe desktop, zoom mobile  
 
 ---
 
 ## Fonctionnalités principales
 
-- **Ajout / suppression** de lignes de match
-- **Labels « Match N »** pour chaque ligne pour plus de clarté
-- **Espacements** configurables via CSS variables
-- **Forçage du mode sombre** quel que soit le mode de l’OS
-- **Téléchargement en PNG** "haute résolution" (largeur 1080p * hauteur variable)
-- **Zoom natif** sur mobile pour consultation sans casse de layout
+- **Ajout / suppression** de lignes de match  
+- **Labels « Match N »** pour chaque ligne  
+- **Saisie libre** ou **suggestions** d’équipes  
+- **Sélecteur de fonds** dynamiques (Poster1, Poster2, …)  
+- **Import glob** pour détection automatique des fichiers  
+- **Téléchargement PNG** (1080px × hauteur variable)  
+- **Dark mode** forcé et **contrôles centrés**  
+- **Zoom natif** sur mobile, layout fixe desktop  
 
 ---
 
 ## Choix techniques
 
-- **React** pour le UI dynamique  
+- **React** pour le rendu interactif  
 - **Vite** pour un dev-server ultra-rapide  
-- **html-to-image** pour transformer le DOM en image  
-- **Antonio (Google Fonts)** pour un style sportif  
-- **CSS figé** + variables pour un rendu constant et facilement ajustable  
+- **html-to-image** pour exporter le DOM en image  
+- **Google Font “Antonio”** pour le style sportif  
+- **CSS variables et flexbox** pour un layout ajustable  
 
 ---
 
 ## Spécifications de style
 
-Élément        | Couleur    | Taille | Police   | Position (X,Y)
----------------|------------|--------|----------|------------------------
-Nom équipe 1   | #004096    | 36px   | Antonio  | 340, Y variable  
-Nom équipe 2   | #004096    | 36px   | Antonio  | 740, Y variable  
-Score équipe 1 | #FFFFFF    | 48px   | Antonio  | 70, Y variable  
-Score équipe 2 | #FFFFFF    | 48px   | Antonio  | 1010, Y variable  
+| Élément          | Couleur  | Taille | Police   | Position (X, Y)     |
+|------------------|----------|--------|----------|---------------------|
+| Nom équipe 1     | #004096  | 36px   | Antonio  | 340, Y variable     |
+| Nom équipe 2     | #004096  | 36px   | Antonio  | 740, Y variable     |
+| Score équipe 1   | #FFFFFF  | 48px   | Antonio  | 70, Y variable      |
+| Score équipe 2   | #FFFFFF  | 48px   | Antonio  | 1010, Y variable    |
 
-**Décalage vertical (Y)** :  
-- Match 1 : 347  
-- Match 2 : 467  
-- Match 3 : 587  
-- Match N : Y = 347 + (N - 1) × 120
+**Décalage vertical**  
+Y = 347 + (n − 1) × 120
 
 ---
 
-## Structure des fichiers
+## Structure du projet
 
 ```
 generateur-affiche-match/
 ├── public/
-│   ├── background1.png
-│   ├── background2.png
-│   ├── background3.png
-│   └── favicon.svg
+│   └── favicon.png
 ├── src/
-│   ├── App.jsx         # Composant principal React avec commentaires
-│   ├── App.css         # Styles principaux avec annotations
-│   ├── main.jsx        # Point d’entrée Vite/React
-│   └── index.css       # Reset global minimal
-├── index.html          # Template HTML (inclut meta color-scheme)
-├── package.json        # Dépendances & scripts (version 1.1.0)
-├── vite.config.js      # Config Vite
-├── .gitignore
-├── README.md           # Ce fichier mis à jour
-└── LICENSE             # Licence GPL v3
+│   ├── assets/
+│   │   └── Posters/
+│   │       ├── Poster1/…Poster2/… (FicheNmatchs.png)
+│   ├── App.jsx
+│   ├── App.css
+│   ├── main.jsx
+│   ├── index.html
+│   └── index.css
+├── package.json
+├── vite.config.js
+├── README.md         # Ce fichier
+└── LICENSE
 ```
 
 ---
 
 ## Installation & Lancement
 
-1. Clonez le dépôt :
-   ```bash
-   git clone https://github.com/votre-utilisateur/generateur-affiche-match.git
-   cd generateur-affiche-match
-   ```
-
-2. Installez les dépendances :
-   ```bash
-   npm install
-   ```
-
-3. Démarrez le serveur de développement :
-   ```bash
-   npm run dev
-   ```
-
-4. Ouvrez votre navigateur sur :
-   ```
-   http://localhost:5173
-   ```
+```bash
+git clone https://github.com/AyDtn/generateur-affiche-match.git
+cd generateur-affiche-match
+npm install
+npm run dev
+# ouvrez http://localhost:5173
+```
 
 ---
 
 ## Déploiement sur Vercel
 
-1. Créez un compte sur https://vercel.com  
-2. Connectez votre repo GitHub  
-3. Ajoutez un nouveau projet, sélectionnez ce dépôt  
-4. Vercel détecte automatiquement Vite  
-5. Déployez avec les paramètres par défaut  
-
-URL générée : https://generateur-affiche-match.vercel.app
+1. Connectez le repo à Vercel  
+2. Sélectionnez le projet  
+3. Déployez en mode Vite (paramètres par défaut)  
+4. L’URL se met à jour automatiquement  
 
 ---
 
 ## Auteur
 
-Développé par **DANTAN Aymeric**.  
-Projet libre pour un usage personnel, éducatif ou associatif non lucratif.
+**DANTAN Aymeric**  
+Projet libre pour usage personnel, éducatif et associatif.
