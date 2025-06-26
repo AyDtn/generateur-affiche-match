@@ -1,145 +1,184 @@
-// ─── IMPORTS ────────────────────────────────────────────────────────────────────
-import { useState, useRef } from 'react'       // Hooks React pour le state et la ref
-import './App.css'                              // Styles de l’application
-import { toPng } from 'html-to-image'           // Conversion du DOM en PNG
-import download from 'downloadjs'               // Téléchargement du blob généré
+// src/App.jsx
+import { useState, useRef } from 'react'
+import './App.css'
+import { toPng } from 'html-to-image'
+import download from 'downloadjs'
+
+// ─── 0) IMPORT DYNAMIQUE DES IMAGES ───────────────────────────────────────────
+const posterModules = import.meta.glob(
+  './assets/Posters/Poster*/Fiche*match*.png',
+  { eager: true, import: 'default' }
+)
+
+const posterSets = {}
+for (const path in posterModules) {
+  const m = path.match(/\.\/assets\/Posters\/(Poster\d+)\/Fiche(\d+)match/)
+  if (!m) continue
+  const [, folder, numStr] = m
+  const num = parseInt(numStr, 10)
+  const src = posterModules[path]
+  if (!posterSets[folder]) posterSets[folder] = []
+  posterSets[folder].push({ src, num })
+}
+Object.values(posterSets).forEach(arr =>
+  arr.sort((a, b) => a.num - b.num)
+)
+
+// ─── LISTE PRÉDÉFINIE DES ÉQUIPES ────────────────────────────────────────────
+const teamOptions = [
+  'SPV1',
+  'SPV2',
+  'PAC95',
+  'CO Bolbec-Nointot',
+  'UC Montoire',
+  'USAC',
+  'Alfortville',
+  'Oakenden',
+  'Hells Bells'
+]
 
 function App() {
-  // ─── STATE & REFS ──────────────────────────────────────────────────────────
-  // matches est un tableau d’objets { team1, score1, team2, score2 }
+  // ─── STATE & REFS ───────────────────────────────────────────────────────────
   const [matches, setMatches] = useState([
     { team1: '', score1: '', team2: '', score2: '' },
   ])
-  // posterRef pointe vers le conteneur de l’affiche à exporter
+  const [selectedSet, setSelectedSet] = useState(
+    Object.keys(posterSets)[0] || ''
+  )
   const posterRef = useRef(null)
 
-  // ─── CONSTANTES DE CONFIGURATION ───────────────────────────────────────────
-  // Fonds possibles, tailles associées (largeur fixe 1080px, hauteurs variables)
-  const backgrounds = ['/background1.png','/background2.png','/background3.png']
-  const backgroundSizes = [
-    { width: 1080, height: 460 },
-    { width: 1080, height: 580 },
-    { width: 1080, height: 700 },
-  ]
-  // Paramètres de style pour le texte sur l’affiche
+  // ─── PRÉPARATION DES FONDS ───────────────────────────────────────────────────
+  const selectedArr = posterSets[selectedSet] || []
+  const TOTAL = selectedArr.length
+  const backgrounds = selectedArr.map(item => item.src)
+  const backgroundSizes = selectedArr.map((_, i) => ({
+    width: 1080,
+    height: 460 + i * 120,
+  }))
+
+  // ─── STYLES DE TEXTE ─────────────────────────────────────────────────────────
   const teamColor = '#004096'
   const scoreColor = '#FFFFFF'
   const teamSize = 36
   const scoreSize = 48
   const font = 'Antonio'
 
-  // ─── GESTION DES LIGNES DE MATCH ────────────────────────────────────────────
-  // Ajoute une ligne vierge à la fin
-  const addMatch = () => {
-    setMatches([
-      ...matches,
+  // ─── GESTION DES LIGNES ──────────────────────────────────────────────────────
+  const addMatch = () =>
+    setMatches(prev => [
+      ...prev,
       { team1: '', score1: '', team2: '', score2: '' },
     ])
-  }
 
-  // Supprime la ligne d’index donné
-  const removeMatch = (index) => {
-    setMatches(matches.filter((_, i) => i !== index))
-  }
+  const removeMatch = idx =>
+    setMatches(prev => prev.filter((_, i) => i !== idx))
 
-  // Met à jour le champ (field) de la ligne index avec la valeur value
-  const handleMatchChange = (index, field, value) => {
-    const updated = [...matches]
-    updated[index][field] = value
-    setMatches(updated)
-  }
+  const handleMatchChange = (idx, field, value) =>
+    setMatches(prev => {
+      const copy = [...prev]
+      copy[idx] = { ...copy[idx], [field]: value }
+      return copy
+    })
 
-  // ─── EXPORT / TÉLÉCHARGEMENT DE L’AFFICHE ────────────────────────────────────
+  // ─── EXPORT PNG ──────────────────────────────────────────────────────────────
   const handleDownload = () => {
-    // Détermine quel fond et quelle taille utiliser selon le nombre de matchs
-    const bgIndex = Math.min(matches.length - 1, backgrounds.length - 1)
-    const size = backgroundSizes[bgIndex]
+    const bgIndex = Math.min(matches.length - 1, TOTAL - 1)
+    const size = backgroundSizes[bgIndex] || backgroundSizes[0]
     if (!posterRef.current) return
-
-    // toPng génère un blob PNG du conteneur spécifié
     toPng(posterRef.current, {
       cacheBust: true,
-      pixelRatio: 1,            // ratio 1:1 pour pas alourdir
+      pixelRatio: 1,
       width: size.width,
       height: size.height,
     })
-      .then((dataUrl) => download(dataUrl, 'affiche-match.png'))
-      .catch((err) => console.error('Erreur export :', err))
+      .then(dataUrl => download(dataUrl, 'affiche-match.png'))
+      .catch(err => console.error('Erreur export :', err))
   }
 
-  // ─── POSITIONNEMENT SUR L’AFFICHE ────────────────────────────────────────────
-  // Calcule la coordonnée y en fonction de la ligne (espacement de 120px)
-  const getY = (line) => 347 + line * 120
+  // ─── POSITIONNEMENT SUR LE POSTER ────────────────────────────────────────────
+  const getY = i => 347 + i * 120
+  const bgIndex = Math.min(matches.length - 1, TOTAL - 1)
+  const currentSize = backgroundSizes[bgIndex] || {
+    width: 1080,
+    height: 460,
+  }
+  const background = backgrounds[bgIndex] || ''
 
-  // Choix du fond courant et de ses dimensions
-  const currentBgIndex = Math.min(matches.length - 1, backgrounds.length - 1)
-  const currentSize = backgroundSizes[currentBgIndex]
-  const background = backgrounds[currentBgIndex]
-
-  // ─── RENDU JSX ───────────────────────────────────────────────────────────────
   return (
     <div className="app-wrapper no-sidebar">
       <div className="main">
-
-        {/* ─── FORMULAIRE DE SAISIE ─────────────────────────────────────────────── */}
+        {/* FORMULAIRE DE SAISIE */}
         <div className="forms-list">
-          {matches.map((match, index) => (
-            <div className="match-item" key={index}>
-
-              {/* Label « Match N » au-dessus de chaque ligne */}
-              <span className="match-number">
-                Match {index + 1}
-              </span>
-
-              {/* Champs de saisie pour ce match */}
+          {matches.map((m, i) => (
+            <div className="match-item" key={i}>
+              <span className="match-number">Match {i + 1}</span>
               <div className="form">
+                {/* Nom équipe 1 : saisie libre + suggestions */}
                 <input
                   type="text"
                   placeholder="Nom équipe 1"
-                  value={match.team1}
-                  onChange={(e) =>
-                    handleMatchChange(index, 'team1', e.target.value)
+                  list="team-list"
+                  value={m.team1}
+                  onChange={e =>
+                    handleMatchChange(i, 'team1', e.target.value)
                   }
                 />
                 <input
                   type="number"
                   placeholder="Score 1"
-                  value={match.score1}
-                  onChange={(e) =>
-                    handleMatchChange(index, 'score1', e.target.value)
+                  value={m.score1}
+                  onChange={e =>
+                    handleMatchChange(i, 'score1', e.target.value)
                   }
                 />
+                {/* Nom équipe 2 : saisie libre + suggestions */}
                 <input
                   type="text"
                   placeholder="Nom équipe 2"
-                  value={match.team2}
-                  onChange={(e) =>
-                    handleMatchChange(index, 'team2', e.target.value)
+                  list="team-list"
+                  value={m.team2}
+                  onChange={e =>
+                    handleMatchChange(i, 'team2', e.target.value)
                   }
                 />
                 <input
                   type="number"
                   placeholder="Score 2"
-                  value={match.score2}
-                  onChange={(e) =>
-                    handleMatchChange(index, 'score2', e.target.value)
+                  value={m.score2}
+                  onChange={e =>
+                    handleMatchChange(i, 'score2', e.target.value)
                   }
                 />
-
-                {/* Bouton de suppression de ligne */}
-                <button onClick={() => removeMatch(index)}>❌</button>
+                <button onClick={() => removeMatch(i)}>❌</button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* ─── BOUTONS D’ACTION ─────────────────────────────────────────────────── */}
+        {/* CONTRÔLES : Ajouter / Choix Poster / Télécharger */}
         <div className="form-buttons">
           <button onClick={addMatch}>➕ Ajouter un match</button>
+          <select
+            value={selectedSet}
+            onChange={e => setSelectedSet(e.target.value)}
+          >
+            {Object.keys(posterSets).map(folder => (
+              <option key={folder} value={folder}>
+                {folder}
+              </option>
+            ))}
+          </select>
           <button onClick={handleDownload}>📸 Télécharger l’affiche</button>
         </div>
 
-        {/* ─── AFFICHE A EXPORTER ───────────────────────────────────────────────── */}
+        {/* DATASLIST POUR LES ÉQUIPES */}
+        <datalist id="team-list">
+          {teamOptions.map(team => (
+            <option key={team} value={team} />
+          ))}
+        </datalist>
+
+        {/* APERÇU DE L’AFFICHE */}
         <div
           className="poster"
           ref={posterRef}
@@ -148,14 +187,11 @@ function App() {
             height: currentSize.height,
           }}
         >
-          {/* Fond de l’affiche */}
           <img src={background} alt="Affiche" className="background" />
-
-          {/* Positionne chaque score & nom sur le poster */}
-          {matches.map((match, index) => {
-            const y = getY(index)
+          {matches.map((m, i) => {
+            const y = getY(i)
             return (
-              <div key={index}>
+              <div key={i}>
                 <span
                   className="element"
                   style={{
@@ -166,7 +202,7 @@ function App() {
                     fontFamily: font,
                   }}
                 >
-                  {match.score1}
+                  {m.score1}
                 </span>
                 <span
                   className="element"
@@ -178,7 +214,7 @@ function App() {
                     fontFamily: font,
                   }}
                 >
-                  {match.team1}
+                  {m.team1}
                 </span>
                 <span
                   className="element"
@@ -190,7 +226,7 @@ function App() {
                     fontFamily: font,
                   }}
                 >
-                  {match.team2}
+                  {m.team2}
                 </span>
                 <span
                   className="element"
@@ -202,7 +238,7 @@ function App() {
                     fontFamily: font,
                   }}
                 >
-                  {match.score2}
+                  {m.score2}
                 </span>
               </div>
             )

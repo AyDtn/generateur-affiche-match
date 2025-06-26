@@ -1,166 +1,92 @@
+/* src/App.css */
 /* ─── 0) IMPORT DE LA POLICE ─────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&display=swap');
 
 /* ─── 0b) FORCAGE DU MODE SOMBRE ──────────────────────────────────────────────── */
-/* Informe le navigateur que seule la palette sombre est supportée */
-:root {
+:root { color-scheme: dark; }
+*, *::before, *::after { forced-color-adjust: none; }
+
+/* ─── 1) RESET GLOBAL & FOND ─────────────────────────────────────────────────── */
+body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  overflow-x: hidden;
+  background-color: #1F1F1F;
   color-scheme: dark;
 }
-*, *::before, *::after {
-  forced-color-adjust: none; /* Empêche les UA de forcer leurs propres schémas */
-}
-
-/* ─── 1) RESET GLOBAL & FOND DE L’APP ────────────────────────────────────────── */
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;        /* Coupe tout débordement horizontal */
-  background-color: #1F1F1F;  /* Fond gris foncé */
-  color-scheme: dark;         /* Sécurité supplémentaire pour certains UA */
-}
-
-/* Conteneur principal englobant (header/sidebar éventuels) */
 .app-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;         /* Prend toute la hauteur pour centrer verticalement */
-  box-sizing: border-box;
-  background-color: #1F1F1F;  /* Contraste plus foncé derrière le bloc main */
-}
-
-/* ─── 2) CONTENEUR CENTRAL (BLOC desktop) ───────────────────────────────────── */
-.main {
-  width: 1080px;              /* Largeur fixe desktop (même que le poster) */
-  margin: 2rem auto;          /* Centre et espace autour */
-  padding: 2rem;              /* Espace interne pour respirer */
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;                  /* Espace vertical entre sections */
-  background-color: #1F1F1F;  /* Fond du bloc principal */
-  border-radius: 12px;        /* Arrondis assortis au poster */
-}
-
-/* ─── 3) LISTE DE MATCHS & ESPACEMENT ───────────────────────────────────────── */
-.forms-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--match-spacing, 0rem); /* Contrôle l’espacement vertical entre items */
-  width: 100%;
-}
-
-/* Wrapper par match : contient le label + la form */
-.match-item {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Label « Match N » au-dessus de chaque ligne */
-.match-number {
-  color: #fff;
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 0rem; /* Ajuste l’espacement label ↔ form */
-}
-
-/* ─── 4) LIGNE DE SAISIE ─────────────────────────────────────────────────────── */
-.form {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;               /* Espace horizontal entre inputs et bouton */
-  padding: 0.5rem;           /* Resserre la hauteur des lignes de saisie */
+  display: flex; flex-direction: column;
+  align-items: center; min-height: 100vh;
   background-color: #1F1F1F;
-  border-radius: 10px;
-  width: 100%;
+  box-sizing: border-box;
 }
 
+/* ─── 2) CONTENEUR CENTRAL ───────────────────────────────────────────────────── */
+.main {
+  width: 1080px; margin: 2rem auto; padding: 2rem;
+  display: flex; flex-direction: column; gap: 2rem;
+  background-color: #1F1F1F; border-radius: 12px;
+}
+
+/* ─── 3) FORMULAIRE ─────────────────────────────────────────────────────────── */
+.forms-list      { display: flex; flex-direction: column; gap: var(--match-spacing,0rem); }
+.match-item      { display: flex; flex-direction: column; }
+.match-number    { color: #fff; font-size: 1rem; font-weight: bold; margin-bottom: 0rem; }
+.form {
+  display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem;
+  background-color: #1F1F1F; border-radius: 10px; width: 100%;
+}
 .form input {
-  flex: 1;                   /* Chaque input prend l’espace disponible */
-  padding: 0.6rem 0.8rem;    /* Espace interne pour le texte */
-  font-size: 1rem;
-  background-color: #2c2c2c;
-  border: 1px solid #444;
-  border-radius: 6px;
+  flex: 1; padding: 0.6rem 0.8rem; font-size: 1rem;
+  background-color: #2c2c2c; border: 1px solid #444; border-radius: 6px;
   color: #fff;
 }
-
-.form input::placeholder {
-  color: #bbb;               /* Couleur plus claire pour les placeholders */
-}
-
-/* Bouton ❌ de suppression de ligne */
+.form input::placeholder { color: #bbb; }
 .form button {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 1.4rem;
-  cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  transition: color 0.2s ease;
+  background: none; border: none; color: #fff; font-size: 1.4rem;
+  cursor: pointer; padding: 0.3rem 0.6rem; transition: color 0.2s;
 }
-.form button:hover {
-  color: #ff4d4d;
-}
+.form button:hover { color: #ff4d4d; }
 
-/* ─── 5) BOUTONS D’ACTION ───────────────────────────────────────────────────── */
+/* ─── 4) BOUTONS + SÉLECT ────────────────────────────────────────────────────── */
 .form-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
+  display: flex; justify-content: center; align-items: center; gap: 1rem; width: 100%;
 }
-
-.form-buttons button {
-  padding: 0.7rem 1.2rem;
-  font-size: 1rem;
-  background-color: #004096;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.form-buttons button, .form-buttons select {
+  padding: 0.7rem 1.2rem; font-size: 1rem;
+  border: none; border-radius: 6px; cursor: pointer;
   transition: background 0.3s ease;
 }
-.form-buttons button:hover {
-  background-color: #0055c2;
+.form-buttons button {
+  background-color: #004096; color: #fff;
+}
+.form-buttons button:hover { background-color: #0055c2; }
+
+/* style du select */
+.form-buttons select {
+  background: #2c2c2c; color: #fff;
+}
+.form-buttons select:hover {
+  background: #444; color: #fff;
 }
 
-/* ─── 6) CONTENEUR DE L’AFFICHE (POSTER) ───────────────────────────────────── */
+/* ─── 5) POSTER ─────────────────────────────────────────────────────────────── */
 .poster {
-  width: 1080px;             /* Largeur fixe (desktop) */
-  position: relative;
-  background: black;
-  border-radius: 12px;
-  overflow: hidden;
+  position: relative; width: 1080px;
+  background: #000; border-radius: 12px; overflow: hidden;
 }
-
 .background {
-  position: absolute;        /* Fond en arrière-plan */
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  z-index: 0;
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%; object-fit: cover; z-index: 0;
 }
 
-/* ─── 7) ÉLÉMENTS TEXTUELS POSITIONNÉS ─────────────────────────────────────── */
+/* ─── 6) ÉLÉMENTS TEXTE ─────────────────────────────────────────────────────── */
 .element {
-  position: absolute;
-  transform: translate(-50%, -50%); /* Centre chaque span sur ses coords */
-  white-space: nowrap;
-  z-index: 1;                  /* Par-dessus le background */
-  pointer-events: none;        /* N’interfère pas avec la saisie */
-  font-weight: bold;
-  animation: fadeIn 0.5s ease; /* Animation d’entrée */
+  position: absolute; transform: translate(-50%,-50%);
+  white-space: nowrap; z-index: 1; pointer-events: none;
+  font-weight: bold; animation: fadeIn 0.5s ease;
 }
-
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -60%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
+  from { opacity: 0; transform: translate(-50%,-60%); }
+  to   { opacity: 1; transform: translate(-50%,-50%); }
 }
